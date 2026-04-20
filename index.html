@@ -631,6 +631,12 @@ header {
   color: #1A5FAA;
 }
 
+.alert-box.green {
+  background: rgba(0,160,80,0.06);
+  border-color: rgba(0,160,80,0.25);
+  color: #006630;
+}
+
 /* SECTION BLOCK */
 .section-block {
   background: var(--white);
@@ -1006,6 +1012,19 @@ header {
     <div id="promo-section" style="display:none;">
       <div class="section-title" id="promo-section-title"></div>
       <div class="promo-list" id="promo-list"></div>
+      <div id="fibra-vantaggio" style="display:none; padding: 0 16px 8px;">
+        <div class="section-title" style="margin-top:8px;">💰 Vantaggio Fibra + Mobile</div>
+        <div class="section-block" style="font-size:13px; line-height:1.7; color:var(--text-muted);">
+          <div class="alert-box blue" style="margin-bottom:12px;">ℹ️ Se hai già un'offerta mobile iliad a <strong>9,99€, 11,99€ o 12,99€</strong>/mese puoi ottenere uno sconto fisso sul canone fibra per sempre.</div>
+          <div style="margin-bottom:10px; font-size:13px; font-weight:700; color:var(--text);">📱 Come attivare lo sconto — Passaggi da Area Personale</div>
+          <div class="step"><div class="step-num" style="background:var(--red);">1</div><div class="step-body"><div class="step-title">Accedi all'Area Personale Fibra</div><div class="step-desc">Vai su <strong>iliad.it</strong> → clicca <strong>Area Personale</strong> (sezione fibra) → inserisci le credenziali della linea fibra.</div></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Vai su "Offerta" o "Le mie opzioni"</div><div class="step-desc">Cerca la voce <strong>"Vantaggi Fibra + Mobile"</strong> oppure <strong>"Associa numero mobile"</strong>.</div></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Inserisci il numero iliad</div><div class="step-desc">Digita il numero mobile iliad da 9,99€ o 11,99€ e conferma l'associazione. Potrebbe arrivarti un <strong>codice SMS</strong> sul numero mobile per verificare.</div></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Controlla il metodo di pagamento</div><div class="step-desc">Vai su <strong>"I miei pagamenti"</strong> e attiva un pagamento automatico (IBAN o carta). Obbligatorio per mantenere lo sconto.</div></div></div>
+          <div class="alert-box green" style="margin: 8px 0 12px;">✅ <strong>Come verificare che è attivo:</strong> dopo l'attivazione vedrai il prezzo aggiornato a 22,99€/mese (iliadbox) o 29,99€/mese (iliadbox Super), oppure la dicitura "Sconto Fibra + Mobile attivo".</div>
+          <div class="alert-box yellow">⚠️ <strong>Se non trovi l'opzione</strong> può succedere se il numero mobile non è ancora associabile o la fibra non è completamente attiva. Prova a uscire e rientrare, oppure attendi qualche ora dopo l'attivazione fibra.</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1495,8 +1514,8 @@ const promos = {
     { name:"Domotica",     price:"1,99", priceSub:"€/mese", gb:"IoT", gbUnit:"DATA", detail:"SIM solo dati per oggetti smart e dispositivi IoT. Solo nuovi numeri, no roaming extra UE.", tags:["IoT","Solo dati"], type:"red" },
   ],
   fibra: [
-    { name:"iliadbox",       price:"da 23,99", priceSub:"€/mese", gb:"5", gbUnit:"Gbit/s", detail:"FTTH fino a 5 Gbit/s. Router Wi-Fi 7 in comodato gratuito. Minuti illimitati verso fissi e mobili Italia + fissi internazionali.", tags:["FTTH","Wi-Fi 7","Min illimitati"], type:"fibra" },
-    { name:"iliadbox Super", price:"da 23,99", priceSub:"€/mese", gb:"5", gbUnit:"Gbit/s", detail:"Tutto di iliadbox + 2 Wi-Fi extender, saponetta Wi-Fi con 350 GB/mese, antivirus McAfee e Safe Family inclusi.", tags:["FTTH","Wi-Fi 7","Extender","McAfee"], type:"fibra" },
+    { name:"iliadbox",       price:"26,99", priceDiscounted:"22,99", priceSub:"€/mese", gb:"5", gbUnit:"Gbit/s", detail:"FTTH fino a 5 Gbit/s. Router Wi-Fi 7 in comodato gratuito. Minuti illimitati verso fissi e mobili Italia + fissi internazionali. Con offerta mobile iliad ≥9,99€: <strong style='color:var(--green)'>22,99€/mese</strong> per sempre.", tags:["FTTH","Wi-Fi 7","Min illimitati"], type:"fibra" },
+    { name:"iliadbox Super", price:"34,99", priceDiscounted:"29,99", priceSub:"€/mese", gb:"5", gbUnit:"Gbit/s", detail:"Tutto di iliadbox + 2 Wi-Fi extender, saponetta Wi-Fi con 350 GB/mese 4G, antivirus McAfee Multi Access inclusi. Con offerta mobile iliad a 9,99€ o 11,99€: <strong style='color:var(--green)'>29,99€/mese</strong> per sempre.", tags:["FTTH","Wi-Fi 7","Extender","McAfee"], type:"fibra" },
   ],
   business: [
     { name:"Business Giga 300", price:"11,99", priceSub:"€+IVA/mese", gb:"300", gbUnit:"GB", detail:"5G, minuti e SMS illimitati. Roaming: 22 GB UE + 5 GB extra UE in oltre 30 paesi incluso USA. Prezzo garantito per sempre.", tags:["5G","22 GB UE","5 GB Extra UE"], type:"business" },
@@ -1703,8 +1722,15 @@ function showPromos(type) {
           <div class="promo-gb">${p.gb}<span> ${p.gbUnit}</span></div>
         </div>
         <div class="promo-price-box">
+          ${p.priceDiscounted ? `
+          <div style="text-align:right;">
+            <div style="font-size:11px; opacity:0.65; text-decoration:line-through; line-height:1.2;">${p.price} ${p.priceSub}</div>
+            <div class="promo-price" style="line-height:1.1;">${p.priceDiscounted}</div>
+            <div class="promo-price-sub">€/mese con mobile</div>
+            <div style="background:rgba(255,255,255,0.22); border-radius:6px; font-size:10px; font-weight:700; padding:2px 6px; margin-top:4px; letter-spacing:0.3px;">📱 FIBRA + MOBILE</div>
+          </div>` : `
           <div class="promo-price">${p.price}</div>
-          <div class="promo-price-sub">${p.priceSub}</div>
+          <div class="promo-price-sub">${p.priceSub}</div>`}
         </div>
       </div>
       <div class="promo-body">
@@ -1713,6 +1739,7 @@ function showPromos(type) {
       </div>
     </div>`).join("");
   document.getElementById("promo-section").style.display = "block";
+  document.getElementById("fibra-vantaggio").style.display = (type === "fibra") ? "block" : "none";
   document.getElementById("promo-section").scrollIntoView({ behavior:"smooth", block:"start" });
 }
 
