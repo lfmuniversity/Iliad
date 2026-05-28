@@ -940,7 +940,7 @@ header {
   <div id="tab-offerte" class="content active">
     <div class="update-bar">
       <div class="update-dot"></div>
-      <div class="update-text">Aggiornato al <strong>22 maggio 2026</strong></div>
+      <div class="update-text">Aggiornato al <strong>28 maggio 2026</strong></div>
     </div>
 
     <!-- NOVITÀ GIGA PRIME -->
@@ -1442,6 +1442,34 @@ header {
     <div class="comm-card">
       <div class="comm-card-header">
         <div class="comm-card-header-text">
+          <div class="comm-card-title">Novità: Offerte TOP PLUS, nuovo spot con Megan Gale e telepromozioni con Stefano De Martino 🔝</div>
+          <div class="comm-card-meta">28 maggio 2026</div>
+        </div>
+        <div class="comm-new-badge">🆕 NUOVO</div>
+      </div>
+      <div class="comm-body">
+        <p>Ciao a tutti,</p>
+        <p>da oggi fino al <strong>30 giugno ore 15:00</strong> tornano live le nostre offerte TOP 🎯</p>
+        <div class="comm-highlight">
+          👉🏻 <strong>TOP 250 PLUS: a 9,99€/mese</strong>, minuti e SMS illimitati, 250 GB anche in 5G e 25 GB EXTRA dedicati per navigare in Europa
+        </div>
+        <div class="comm-highlight">
+          👉🏻 <strong>TOP 300 PLUS: a 11,99€/mese</strong>, minuti e SMS illimitati, 300 GB anche in 5G e 30 GB EXTRA dedicati per navigare in Europa
+        </div>
+        <p>La nuova offerta TOP 250 PLUS sarà on air da <strong>domenica 31 maggio</strong> in TV con una protagonista d'eccezione: <strong>Megan Gale</strong> con un nuovo spot. La campagna sarà supportata da una pianificazione su CTV, radio, digital audio, piattaforme digital e canali social 📺</p>
+        <p>Ma le novità non finiscono qui — dal <strong>31 maggio all'8 giugno</strong> torniamo in TV con una nuova <strong>telepromozione con Stefano De Martino e Francesco Paolantoni</strong> durante Affari Tuoi 😎</p>
+        <div class="comm-highlight">
+          📌 <strong>Affari Tuoi – Rai 1</strong><br>Spot in onda alle 20:40 dal 31 maggio all'8 giugno
+        </div>
+        <p>Un'altra grande occasione sul piccolo schermo che ci permette di entrare nelle case di milioni di telespettatori. Sintonizzatevi anche voi e non perdetevi il nostro spot! 📺</p>
+        <p><strong>Confidiamo che queste novità possano contribuire a tante nuove attivazioni</strong> 💪</p>
+      </div>
+      <div class="comm-footer">📢 Comunicazione interna LFM S.p.A.</div>
+    </div>
+
+    <div class="comm-card">
+      <div class="comm-card-header">
+        <div class="comm-card-header-text">
           <div class="comm-card-title">Novità: iliad lancia GIGA PRIME<br>con Amazon Prime incluso per un anno</div>
           <div class="comm-card-meta">16 aprile 2026</div>
         </div>
@@ -1505,9 +1533,9 @@ Il cliente risponde ~30€.
 
 const promos = {
   mobile: [
-    { name:"GIGA PRIME",   price:"12,99", priceSub:"€/mese", gb:"300", gbUnit:"GB", detail:"5G, minuti e SMS illimitati in Italia e UE. +30 GB extra in roaming Europa. Amazon Prime incluso per 12 mesi (poi 4,99€/mese). Hotspot e VoLTE inclusi.", tags:["5G","30 GB EU","Amazon Prime","Novità"], type:"red", promo:true },
-    { name:"GIGA 250",     price:"11,99", priceSub:"€/mese", gb:"250", gbUnit:"GB", detail:"5G, minuti e SMS illimitati in Italia e UE. Hotspot incluso, nessuno scatto alla risposta.", tags:["5G","EU incluso","Hotspot"], type:"red" },
-    { name:"GIGA 200",     price:"9,99", priceSub:"€/mese", gb:"200", gbUnit:"GB", detail:"5G, minuti e SMS illimitati in Italia e UE. Hotspot incluso, nessuno scatto alla risposta.", tags:["5G","EU incluso","Hotspot"], type:"red" },
+    { name:"GIGA PRIME",   price:"12,99", priceSub:"€/mese", gb:"300", gbUnit:"GB", detail:"5G, minuti e SMS illimitati in Italia e UE. +30 GB extra in roaming Europa. Amazon Prime incluso per 12 mesi (poi 4,99€/mese). Hotspot e VoLTE inclusi.", tags:["5G","30 GB EU","Amazon Prime"], type:"red", promo:true },
+    { name:"TOP 300 PLUS", price:"11,99", priceSub:"€/mese", gb:"300", gbUnit:"GB", detail:"5G, minuti e SMS illimitati in Italia e UE. +30 GB extra in roaming Europa. Hotspot e VoLTE inclusi. Promo a tempo limitato fino al 30 giugno.", tags:["5G","30 GB EU","VoLTE","Promo fino 30/06"], type:"red", promo:true },
+    { name:"TOP 250 PLUS", price:"9,99", priceSub:"€/mese", gb:"250", gbUnit:"GB", detail:"5G, minuti e SMS illimitati in Italia e UE. +25 GB extra in roaming Europa. Hotspot e VoLTE inclusi. Promo a tempo limitato fino al 30 giugno.", tags:["5G","25 GB EU","VoLTE","Promo fino 30/06"], type:"red", promo:true },
     { name:"GIGA 150",     price:"7,99", priceSub:"€/mese", gb:"150", gbUnit:"GB", detail:"4G/4G+, minuti e SMS illimitati in Italia e UE. +12 GB extra in roaming Europa. Hotspot incluso, nessuno scatto alla risposta.", tags:["4G/4G+","12 GB EU","Hotspot"], type:"red" },
     { name:"Voce",         price:"4,99", priceSub:"€/mese", gb:"∞", gbUnit:"VOC", detail:"Minuti e SMS illimitati in Italia e UE. Solo voce, nessun dato incluso.", tags:["Solo voce","Min+SMS illimitati"], type:"red" },
     { name:"Dati 350",     price:"14,99", priceSub:"€/mese", gb:"350", gbUnit:"GB", detail:"5G solo dati, no voce. Perfetta per tablet, hotspot o secondo dispositivo.", tags:["5G","Solo dati"], type:"red" },
@@ -1702,13 +1730,46 @@ const guides = {
   }
 };
 
+const tabOrder = ["offerte","club","guide","faq","comunicazioni","vendita","tricks"];
+
 function switchTab(tab, el) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  el.classList.add("active");
+  if (el) el.classList.add("active");
+  else {
+    const idx = tabOrder.indexOf(tab);
+    document.querySelectorAll(".tab")[idx]?.classList.add("active");
+  }
   document.querySelectorAll(".content").forEach(c => c.classList.remove("active"));
   document.getElementById("tab-" + tab).classList.add("active");
   if (tab !== "offerte") document.getElementById("promo-section").style.display = "none";
+  // scroll tab into view
+  const activeTab = document.querySelector(".tab.active");
+  if (activeTab) activeTab.scrollIntoView({ behavior:"smooth", block:"nearest", inline:"center" });
 }
+
+// Swipe support
+(function() {
+  let startX = 0, startY = 0;
+  const mainView = document.getElementById("mainView");
+
+  mainView.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  mainView.addEventListener("touchend", e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    // Only horizontal swipes (dx > 50px, less vertical drift than horizontal)
+    if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return;
+    const current = document.querySelector(".tab.active");
+    if (!current) return;
+    const tabs = [...document.querySelectorAll(".tab")];
+    const idx = tabs.indexOf(current);
+    if (dx < 0 && idx < tabs.length - 1) switchTab(tabOrder[idx + 1], null); // swipe left → next
+    if (dx > 0 && idx > 0) switchTab(tabOrder[idx - 1], null);               // swipe right → prev
+  }, { passive: true });
+})();
 
 function showPromos(type) {
   const titles = { mobile:"Offerte Mobile", fibra:"Offerte Fibra", business:"Offerte Business" };
