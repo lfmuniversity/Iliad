@@ -48,11 +48,22 @@ main{max-width:1180px;margin:auto;padding:42px 22px 70px}.hero{display:grid;grid
 
 .iliad-header-logo{display:block;height:36px;width:auto;max-width:120px;object-fit:contain}
 .lfm-logo-wrap{display:flex;align-items:center;justify-content:center}
-.lfm-header-logo{display:block;height:54px;width:auto;max-width:92px;object-fit:contain}
+.lfm-header-logo{display:block;height:42px;width:auto;max-width:74px;object-fit:contain}
 @media(max-width:600px){
  .iliad-header-logo{height:30px;max-width:100px}
- .lfm-header-logo{height:44px;max-width:76px}
+ .lfm-header-logo{height:35px;max-width:62px}
 }
+
+
+.search-results{margin:10px 0 28px;display:grid;gap:10px}
+.search-result{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:15px 16px;background:#fff;border:1px solid var(--line);border-radius:16px;cursor:pointer;transition:.18s ease}
+.search-result:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.search-result h3{font-size:15px;margin:0 0 5px}
+.search-result p{font-size:12px;line-height:1.45;color:var(--muted);margin:0}
+.search-result .result-category{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:5px}
+.search-result .go{font-size:20px}
+.search-empty{padding:18px;background:#fff;border:1px solid var(--line);border-radius:16px;color:var(--muted);font-size:13px}
+.search-highlight{background:#fff1f1;border-radius:4px;padding:0 2px}
 
 </style>
 </head>
@@ -62,6 +73,7 @@ main{max-width:1180px;margin:auto;padding:42px 22px 70px}.hero{display:grid;grid
 <section id="home" class="view active">
   <div class="hero"><div><div class="eyebrow">Knowledge Hub</div><h1>Tutto quello che ti serve. Senza perderti.</h1><p>Guide operative Iliad organizzate per argomento, pensate per trovare velocemente la procedura giusta durante l'attività in store.</p></div><div class="hero-mark"><span>i</span></div></div>
   <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg><input id="searchInput" placeholder="Cerca una guida…" oninput="searchGuides(this.value)"></div>
+<div id="searchResults" class="search-results" style="display:none"></div>
   <div class="section-title"><h2>Scegli una categoria</h2><span>3 aree operative</span></div>
   <div class="categories" id="categoryGrid">
     <article class="cat" onclick="openCategory('generic')"><div class="cat-icon">⌁</div><h3>Guide generiche</h3><p>Documenti, requisiti, strumenti e informazioni valide trasversalmente sulle attivazioni Iliad.</p><div class="cat-foot"><span class="count">2 guide</span><span class="arrow">→</span></div></article>
@@ -272,7 +284,76 @@ function switchView(id){document.querySelectorAll('.view').forEach(v=>v.classLis
 function showHome(){switchView('home');document.getElementById('searchInput').value='';document.getElementById('categoryGrid').style.display='grid'}
 function openCategory(id){const c=categories[id];document.getElementById('categoryTitle').textContent=c.title;document.getElementById('categoryDescription').textContent=c.description;const list=document.getElementById('guideList');list.innerHTML='';if(!c.guides.length){list.innerHTML='<div class="empty">Nessuna guida inserita per il momento.</div>'}else{c.guides.forEach((g,i)=>{const card=document.createElement('article');card.className='guide-card';card.onclick=g.open;card.innerHTML=`<div class="guide-num">${String(i+1).padStart(2,'0')}</div><div><h3>${g.title}</h3><p>${g.desc}</p></div><div class="go">→</div>`;list.appendChild(card)})}switchView('category')}
 function openGuide(id){switchView(id)}
-function searchGuides(q){q=q.trim().toLowerCase();if(!q){document.getElementById('categoryGrid').style.display='grid';return}const hay='documenti accettati attivazione carta identità patente passaporto permesso soggiorno tessera sanitaria simbox invio moduli modulistica area personale sostituzione sim furto smarrimento malfunzionamento subentro cambio intestatario mortis causa disabilità agevolazioni business privato b2b b2c credit check experian solvibilità';if(hay.includes(q)){openCategory('generic')} }
+function searchGuides(q){
+  const input=document.getElementById('searchInput');
+  const results=document.getElementById('searchResults');
+  const grid=document.getElementById('categoryGrid');
+  const sectionTitle=document.querySelector('#home .section-title');
+
+  const raw=q;
+  q=q.trim().toLowerCase();
+
+  if(!q){
+    results.style.display='none';
+    results.innerHTML='';
+    grid.style.display='grid';
+    if(sectionTitle) sectionTitle.style.display='';
+    return;
+  }
+
+  const guideMap=[
+    {id:'guide-docs',category:'Guide generiche',title:"Documenti accettati per l'attivazione"},
+    {id:'guide-moduli',category:'Guide generiche',title:'Invio moduli da Area Personale'},
+    {id:'guide-sostituzione',category:'Guide SIM Consumer',title:'Sostituzione SIM'},
+    {id:'guide-subentro',category:'Guide SIM Consumer',title:'Subentro'},
+    {id:'guide-disabilita',category:'Guide SIM Consumer',title:'Agevolazioni disabilità'},
+    {id:'guide-b2b-b2c',category:'Guide SIM Business',title:'Business → Privato'},
+    {id:'guide-credit-check',category:'Guide SIM Business',title:'Credit Check Business'}
+  ];
+
+  const words=q.split(/\s+/).filter(Boolean);
+
+  const matches=guideMap.map(g=>{
+    const el=document.getElementById(g.id);
+    const text=(g.title+' '+g.category+' '+(el?el.innerText:'')).toLowerCase();
+    const ok=words.every(w=>text.includes(w));
+    if(!ok) return null;
+
+    let snippet='';
+    if(el){
+      const clean=el.innerText.replace(/\s+/g,' ').trim();
+      const lower=clean.toLowerCase();
+      let pos=lower.indexOf(words[0]);
+      if(pos<0) pos=0;
+      const start=Math.max(0,pos-80);
+      const end=Math.min(clean.length,pos+180);
+      snippet=(start>0?'…':'')+clean.slice(start,end)+(end<clean.length?'…':'');
+    }
+    return {...g,snippet};
+  }).filter(Boolean);
+
+  grid.style.display='none';
+  if(sectionTitle) sectionTitle.style.display='none';
+  results.style.display='grid';
+
+  if(!matches.length){
+    results.innerHTML='<div class="search-empty">Nessun risultato. Prova con parole come “PEC”, “passaporto”, “morte”, “Experian”, “SIMBOX” o “disabilità”.</div>';
+    return;
+  }
+
+  results.innerHTML='';
+  matches.forEach(g=>{
+    const card=document.createElement('article');
+    card.className='search-result';
+    card.onclick=()=>openGuide(g.id);
+    card.innerHTML=`<div>
+      <div class="result-category">${g.category}</div>
+      <h3>${g.title}</h3>
+      <p>${g.snippet}</p>
+    </div><div class="go">→</div>`;
+    results.appendChild(card);
+  });
+}
 
 function openImage(src){
   document.getElementById('lightboxImg').src=src;
